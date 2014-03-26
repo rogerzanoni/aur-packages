@@ -1,0 +1,42 @@
+# Maintainer: Roger Zanoni <rogerzanoni@gmail.com>
+# Contributor: Sylvain Henry <hsyl20@gmail.com>
+# Contributor: Marti Raudsepp <marti@juffo.org>
+# Contributor: Dan McGee <dpmcgee@gmail.com>
+# Contributor: LeCrayonVert <sunrider@laposte.net>
+# Contributor: Lukas Fleischer <archlinux@cryptocrack.de>
+# Contributor: Vladimir Kirillov <proger@wilab.org.ua>
+
+pkgname=coccinelle
+_pkgver=1.0.0-rc20
+pkgver=1.0.0rc20
+pkgrel=1
+pkgdesc="Provides spatch program used to apply semantic patches"
+arch=('i686' 'x86_64')
+url="http://coccinelle.lip6.fr"
+license=('GPL2')
+makedepends=('ocaml')
+depends=('ocaml-findlib' 'python2')
+options=(!strip)
+source=(
+  http://coccinelle.lip6.fr/distrib/${pkgname}-${_pkgver}.tgz
+)
+
+build() {
+   cd "$srcdir/$pkgname-$_pkgver"
+
+   ./configure --prefix=/usr --with-python=/usr/bin/python2
+   make depend
+   make
+}
+
+check() {
+   cd "$srcdir/$pkgname-$_pkgver"
+   make check
+}
+
+package() {
+   cd "$srcdir/$pkgname-$_pkgver"
+   make DESTDIR=$pkgdir MANDIR="/usr/share/man" install
+}
+
+sha256sums=('d521f3007141834cb9b827ca3ee0bf75542911ae1e8313d3641e679923368836')
